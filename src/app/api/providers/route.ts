@@ -1,6 +1,6 @@
-import { mkdir, appendFile } from "node:fs/promises";
-import path from "node:path";
 import { NextResponse } from "next/server";
+import { queryDatabase } from "@/lib/database";
+import { hasNotificationConfig, sendProviderApplicationNotification } from "@/lib/notifications";
 import { providerApplicationSchema, type StoredProviderApplication } from "@/lib/providers";
 
 export async function POST(request: Request) {
@@ -24,18 +24,61 @@ export async function POST(request: Request) {
   };
 
   try {
-    const dataDir = path.join(process.cwd(), ".data");
-    await mkdir(dataDir, { recursive: true });
-    await appendFile(path.join(dataDir, "provider-applications.jsonl"), `${JSON.stringify(application)}\n`, "utf8");
+    await queryDatabase(
+      `
+        INSERT INTO provider_applications (
+          id,
+          created_at,
+          contact_name,
+          practice_name,
+          phone,
+          email,
+          website,
+          city,
+          state,
+          license_number,
+          malpractice_status,
+          specialties,
+          desired_lead_volume,
+          notes,
+          page_source
+        ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15)
+      `,
+      [
+        application.id,
+        application.createdAt,
+        application.contactName,
+        application.practiceName,
+        application.phone,
+        application.email,
+        application.website || null,
+        application.city,
+        application.state,
+        application.licenseNumber,
+        application.malpracticeStatus,
+        application.specialties,
+        application.desiredLeadVolume,
+        application.notes || null,
+        application.pageSource
+      ]
+    );
   } catch (error) {
-    console.error("Unable to persist provider application locally", error);
+    console.error("Unable to persist provider application in Postgres", error);
     return NextResponse.json(
       {
-        error: "Your application was received, but local demo storage is unavailable.",
+        error: "Your application was received, but storage is unavailable.",
         id: application.id
       },
       { status: 202 }
     );
+  }
+
+  if (hasNotificationConfig()) {
+    try {
+      await sendProviderApplicationNotification(application);
+    } catch (error) {
+      console.error("Unable to send provider application notification email", error);
+    }
   }
 
   return NextResponse.json({
