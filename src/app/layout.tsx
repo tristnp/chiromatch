@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import Link from "next/link";
+import Script from "next/script";
 import { FormScrollLink } from "@/components/FormScrollLink";
 import "./globals.css";
 import { siteConfig } from "@/lib/seo";
@@ -9,6 +10,8 @@ const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter"
 });
+
+const googleAnalyticsId = "G-9ZF7816ZH9";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
@@ -27,6 +30,20 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={inter.variable}>
+      <head>
+        <Script
+          src={`https://www.googletagmanager.com/gtag/js?id=${googleAnalyticsId}`}
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', '${googleAnalyticsId}');
+          `}
+        </Script>
+      </head>
       <body className="font-sans antialiased">
         <Header />
         {children}
