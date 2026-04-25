@@ -3,7 +3,7 @@ import { getAreaPath, getAreaTitle, type LocationArea, type LocationState } from
 
 export const siteConfig = {
   name: "ChiropracticMatch",
-  url: "https://chiropracticmatch.com",
+  url: "https://www.chiropracticmatch.com",
   description:
     "ChiropracticMatch connects auto accident victims with chiropractors across the US."
 };
