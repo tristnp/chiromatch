@@ -79,3 +79,29 @@ export function stateJsonLd(state: LocationState) {
     }))
   };
 }
+
+export function blogPostJsonLd(post: {
+  title: string;
+  excerpt: string;
+  slug: string;
+  publishDate: string;
+}) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    headline: post.title,
+    description: post.excerpt,
+    datePublished: post.publishDate,
+    dateModified: post.publishDate,
+    mainEntityOfPage: absoluteUrl(`/blog/${post.slug}`),
+    author: {
+      "@type": "Organization",
+      name: siteConfig.name
+    },
+    publisher: {
+      "@type": "Organization",
+      name: siteConfig.name,
+      url: siteConfig.url
+    }
+  };
+}

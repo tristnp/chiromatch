@@ -122,6 +122,9 @@ function Footer() {
             <Link href="/auto-accident-chiropractor" className="hover:text-[#12203f]">
               Auto Accident Chiropractor
             </Link>
+            <Link href="/blog" className="hover:text-[#12203f]">
+              Blog
+            </Link>
             <Link href="/locations" className="hover:text-[#12203f]">
               Browse Cities
             </Link>

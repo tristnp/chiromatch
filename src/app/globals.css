@@ -259,6 +259,40 @@ summary::-webkit-details-marker {
   width: 100%;
 }
 
+.blog-prose {
+  color: #536986;
+  font-size: 1.08rem;
+  line-height: 2rem;
+}
+
+.blog-prose p {
+  margin: 0;
+}
+
+.blog-prose p + p {
+  margin-top: 1.4rem;
+}
+
+.blog-prose h2 {
+  color: #12203f;
+  font-size: 2rem;
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  margin: 0 0 1rem;
+}
+
+@media (max-width: 640px) {
+  .blog-prose {
+    font-size: 1rem;
+    line-height: 1.8rem;
+  }
+
+  .blog-prose h2 {
+    font-size: 1.6rem;
+  }
+}
+
 .network-map {
   aspect-ratio: 1.36;
   background: #f7f5f2;

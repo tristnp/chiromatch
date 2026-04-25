@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { cities } from "../../lib/cities";
+import { blogPosts } from "@/data/blog-posts";
 import { areas, getAreaPath, getStatePath, states } from "@/lib/locations";
 import { absoluteUrl } from "@/lib/seo";
 
@@ -8,6 +9,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const staticRoutes = [
     "/",
     "/auto-accident-chiropractor",
+    "/blog",
     "/for-chiropractors",
     "/locations",
     "/privacy",
@@ -34,6 +36,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: now,
       changeFrequency: "weekly" as const,
       priority: 0.9
+    })),
+    ...blogPosts.map((post) => ({
+      url: absoluteUrl(`/blog/${post.slug}`),
+      lastModified: new Date(post.publishDate),
+      changeFrequency: "monthly" as const,
+      priority: 0.8
     })),
     ...cities.flatMap((city) => [
       {
