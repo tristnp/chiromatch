@@ -85,6 +85,8 @@ export function blogPostJsonLd(post: {
   excerpt: string;
   slug: string;
   publishDate: string;
+  authorName?: string;
+  featuredImage?: { url: string } | null;
 }) {
   return {
     "@context": "https://schema.org",
@@ -96,12 +98,13 @@ export function blogPostJsonLd(post: {
     mainEntityOfPage: absoluteUrl(`/blog/${post.slug}`),
     author: {
       "@type": "Organization",
-      name: siteConfig.name
+      name: post.authorName ?? siteConfig.name
     },
     publisher: {
       "@type": "Organization",
       name: siteConfig.name,
       url: siteConfig.url
-    }
+    },
+    image: post.featuredImage?.url
   };
 }

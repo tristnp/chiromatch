@@ -1,11 +1,12 @@
 import type { MetadataRoute } from "next";
 import { cities } from "../../lib/cities";
-import { blogPosts } from "@/data/blog-posts";
+import { getBlogPosts } from "@/lib/blog";
 import { areas, getAreaPath, getStatePath, states } from "@/lib/locations";
 import { absoluteUrl } from "@/lib/seo";
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const now = new Date();
+  const blogPosts = await getBlogPosts();
   const staticRoutes = [
     "/",
     "/auto-accident-chiropractor",

@@ -56,8 +56,8 @@ export default function RootLayout({
 function Header() {
   return (
     <header className="sticky top-0 z-40 border-b border-[#dce7f4] bg-white/96 shadow-[0_8px_24px_rgba(18,32,63,0.04)] backdrop-blur">
-      <div className="mx-auto grid max-w-7xl items-center gap-4 px-4 py-4 sm:px-6 lg:grid-cols-[1fr_auto_1fr] lg:px-8">
-        <div className="justify-self-start">
+      <div className="mx-auto flex max-w-7xl items-center gap-4 px-4 py-4 sm:px-6 lg:px-8">
+        <div className="shrink-0">
           <Link href="/" className="flex items-center gap-3 font-extrabold text-[#12203f]">
             <span className="flex h-11 w-11 items-center justify-center rounded-[8px] bg-[#58b7dd] text-white shadow-[0_10px_24px_rgba(88,183,221,0.22)]">
               <svg aria-hidden="true" className="h-5 w-5" viewBox="0 0 24 24" fill="none">
@@ -75,21 +75,21 @@ function Header() {
           </Link>
         </div>
 
-        <nav className="hidden items-center justify-center gap-8 text-[0.98rem] font-semibold text-[#48617f] lg:flex">
-          <Link href="/#how-it-works" className="hover:text-[#12203f]">
-            How It Works
-          </Link>
-          <Link href="/locations" className="hover:text-[#12203f]">
-            Browse Cities
-          </Link>
-          <Link href="/for-chiropractors" className="text-[#58b7dd] hover:text-[#12203f]">
-            For Chiropractors
-          </Link>
-        </nav>
+        <div className="ml-auto hidden items-center gap-8 lg:flex">
+          <nav className="flex items-center gap-8 text-[0.98rem] font-semibold text-[#48617f]">
+            <Link href="/blog" className="hover:text-[#12203f]">
+              Blog
+            </Link>
+            <Link href="/locations" className="hover:text-[#12203f]">
+              Browse Cities
+            </Link>
+            <Link href="/for-chiropractors" className="text-[#58b7dd] hover:text-[#12203f]">
+              For Chiropractors
+            </Link>
+          </nav>
 
-        <div className="justify-self-end">
           <FormScrollLink
-            className="button-primary hidden text-sm sm:inline-flex"
+            className="button-primary text-sm"
             homeChildren="Request Match"
             providerChildren="Apply to Join"
           >

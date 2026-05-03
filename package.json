@@ -8,15 +8,26 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "cities:generate": "node ./scripts/generate-city-seo-records.mjs",
+    "studio:dev": "sanity dev",
+    "studio:deploy": "sanity deploy",
+    "blog:import:sanity": "node ./scripts/import-blog-posts-to-sanity.mjs"
   },
   "dependencies": {
+    "@sanity/client": "^7.22.0",
+    "@sanity/image-url": "^2.1.1",
+    "@sanity/schema": "^3.83.0",
+    "@sanity/types": "^3.83.0",
+    "@sanity/vision": "^3.83.0",
     "next": "14.2.35",
     "pg": "^8.20.0",
     "react": "18.3.1",
     "react-dom": "18.3.1",
     "react-simple-maps": "^3.0.0",
     "resend": "^6.12.2",
+    "sanity": "^3.83.0",
+    "styled-components": "^6.4.1",
     "zod": "3.25.76"
   },
   "devDependencies": {

@@ -1,9 +1,11 @@
 import type { ReactNode } from "react";
 import Link from "next/link";
 import { LeadForm } from "@/components/LeadForm";
+import { LocationZipHeroCard } from "@/components/LocationZipHeroCard";
 import { NationwideCoverageMap } from "@/components/NationwideCoverageMap";
+import { RotatingHeroWord } from "@/components/RotatingHeroWord";
 import { cities, getCitiesByState, getCityBrowseDescription, getCityBrowseLabel, getCityPagePath } from "../../lib/cities";
-import { getAreaPath, getStatePath, states, type LocationArea, type LocationState } from "@/lib/locations";
+import { areas, getAreaPath, getStatePath, states, type LocationArea, type LocationState } from "@/lib/locations";
 
 const featuredCities = cities.slice(0, 8);
 
@@ -74,6 +76,8 @@ type Step = {
 };
 
 export function Hero() {
+  const rotatingWords = ["stress", "guesswork", "runaround", "waiting", "confusion"];
+
   return (
     <LandingHero
       eyebrow="Free for auto accident victims"
@@ -83,7 +87,9 @@ export function Hero() {
           <br />
           after a car accident
           <br />
-          <span className="text-[#58b7dd]">without the runaround.</span>
+          <span className="text-[#58b7dd]">
+            <RotatingHeroWord words={rotatingWords} />
+          </span>
         </>
       }
       description="We match you with a licensed chiropractor in your area who specializes in auto accident injuries and helps you take the next step fast."
@@ -225,14 +231,14 @@ export function HowItWorks({
           {items.map((step, index) => (
             <article
               key={step.title}
-              className={`surface-card motion-fade-up relative overflow-hidden p-8 ${index === items.length - 1 ? "border-[#7fd1ee]" : ""}`}
+              className={`how-it-works__card surface-card motion-fade-up relative overflow-hidden p-8 ${index === items.length - 1 ? "border-[#7fd1ee]" : ""}`}
             >
-              <p className="text-[5.5rem] font-black leading-none tracking-[-0.06em] text-[#eaf6fc]">{step.number}</p>
-              <div className="mt-3 flex h-14 w-14 items-center justify-center rounded-[8px] bg-[#edf8fd] text-[#58b7dd]">
+              <p className="how-it-works__number text-[5.5rem] font-black leading-none tracking-[-0.06em] text-[#eaf6fc]">{step.number}</p>
+              <div className="how-it-works__icon mt-3 flex h-14 w-14 items-center justify-center rounded-[8px] bg-[#edf8fd] text-[#58b7dd]">
                 <IconStep index={index} />
               </div>
-              <h3 className="mt-8 text-[2rem] font-black leading-tight tracking-[-0.03em] text-[#12203f]">{step.title}</h3>
-              <p className="mt-5 text-lg leading-8 text-[#536986]">{step.text}</p>
+              <h3 className="how-it-works__title mt-8 text-[2rem] font-black leading-tight tracking-[-0.03em] text-[#12203f]">{step.title}</h3>
+              <p className="how-it-works__body mt-5 text-lg leading-8 text-[#536986]">{step.text}</p>
             </article>
           ))}
         </div>
@@ -439,9 +445,9 @@ export function FaqSection({
           <p className="mt-5 text-[1.15rem] leading-8 text-[#536986]">{description}</p>
         </div>
 
-        <div className="mt-12 grid gap-5 md:grid-cols-2">
+        <div className="mt-12 grid items-start gap-5 md:grid-cols-2">
           {faqs.map((faq, index) => (
-            <details key={faq.question} className={`surface-card motion-fade-up p-0 ${index % 2 ? "motion-delay-1" : ""}`}>
+            <details key={faq.question} className={`surface-card motion-fade-up self-start p-0 ${index % 2 ? "motion-delay-1" : ""}`}>
               <summary className="flex cursor-pointer items-start justify-between gap-4 p-6 text-left">
                 <span className="text-[1.35rem] font-black leading-tight tracking-[-0.03em] text-[#12203f]">{faq.question}</span>
                 <span className="mt-1 flex h-10 w-10 shrink-0 items-center justify-center rounded-[8px] bg-[#edf8fd] text-[#58b7dd]">
@@ -504,22 +510,25 @@ export function LocationIndex() {
   }, {});
 
   const orderedStates = Object.keys(citiesByState).sort((a, b) => a.localeCompare(b));
-
   return (
     <main className="bg-[#f7fbff]">
       <section className="motion-fade bg-white py-16 sm:py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="locations-index__intro max-w-3xl">
-            <p className="section-eyebrow">Browse locations</p>
-            <h1 className="mt-4 text-[3rem] font-black leading-[0.98] tracking-[-0.03em] text-[#12203f] sm:text-[4rem]">
-              Browse cities by state
-            </h1>
-            <p className="mt-6 text-[1.15rem] leading-8 text-[#536986]">
-              Choose a state, open the dropdown, and see every live ChiropracticMatch city page for that market in one clean list.
-            </p>
-            <p className="mt-5 text-[0.98rem] font-semibold text-[#7a90aa]">
-              Showing {orderedStates.length} states with {cities.length}+ city pages
-            </p>
+          <div className="locations-index__hero">
+            <div className="locations-index__intro max-w-3xl">
+              <p className="section-eyebrow">Browse locations</p>
+              <h1 className="mt-3 text-[2.9rem] font-black leading-[0.98] tracking-[-0.03em] text-[#12203f] sm:text-[3.75rem]">
+                Browse cities by state
+              </h1>
+              <p className="mt-5 max-w-2xl text-[1.1rem] leading-8 text-[#536986]">
+                Choose a state, open the dropdown, and see every live ChiropracticMatch city page for that market in one clean list.
+              </p>
+              <p className="mt-4 text-[0.98rem] font-semibold text-[#7a90aa]">
+                Showing {orderedStates.length} states with {cities.length}+ city pages
+              </p>
+            </div>
+
+            <LocationZipHeroCard fallbackAreas={areas} />
           </div>
 
           <div className="locations-state-grid mt-12">

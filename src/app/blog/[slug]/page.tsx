@@ -2,17 +2,17 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { BlogArticlePage } from "@/components/Blog";
 import { JsonLd } from "@/components/JsonLd";
-import { blogPosts, getBlogPostBySlug } from "@/data/blog-posts";
+import { getBlogPostBySlug, getBlogPosts, getBlogSlugs } from "@/lib/blog";
 import { blogPostJsonLd, buildMetadata } from "@/lib/seo";
 
-export function generateStaticParams() {
-  return blogPosts.map((post) => ({
-    slug: post.slug
-  }));
+export const dynamic = "force-dynamic";
+
+export async function generateStaticParams() {
+  return getBlogSlugs();
 }
 
-export function generateMetadata({ params }: { params: { slug: string } }): Metadata {
-  const post = getBlogPostBySlug(params.slug);
+export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
+  const post = await getBlogPostBySlug(params.slug);
 
   if (!post) {
     return buildMetadata({
@@ -23,14 +23,14 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
   }
 
   return buildMetadata({
-    title: `${post.title} | ChiropracticMatch Blog`,
-    description: post.excerpt,
+    title: post.seoTitle,
+    description: post.seoDescription,
     path: `/blog/${post.slug}`
   });
 }
 
-export default function BlogPostPage({ params }: { params: { slug: string } }) {
-  const post = getBlogPostBySlug(params.slug);
+export default async function BlogPostPage({ params }: { params: { slug: string } }) {
+  const [post, posts] = await Promise.all([getBlogPostBySlug(params.slug), getBlogPosts()]);
 
   if (!post) {
     notFound();
@@ -39,7 +39,7 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
   return (
     <>
       <JsonLd data={blogPostJsonLd(post)} />
-      <BlogArticlePage post={post} />
+      <BlogArticlePage post={post} posts={posts} />
     </>
   );
 }

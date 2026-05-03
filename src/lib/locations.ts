@@ -347,6 +347,30 @@ export function getAreaForCity(cityName: string, stateName: string) {
   return areas.find((area) => area.stateSlug === stateSlug && area.slug === citySlug);
 }
 
+export function normalizeZip(value: string) {
+  return value.replace(/\D/g, "").slice(0, 5);
+}
+
+export function getAreaForZip(zip: string) {
+  const normalizedZip = normalizeZip(zip);
+
+  if (normalizedZip.length !== 5) {
+    return undefined;
+  }
+
+  return areas.find((area) => area.zipCodes.includes(normalizedZip));
+}
+
+export function getAreaMatchCount(area: LocationArea) {
+  return Math.max(area.zipCodes.length, area.neighborhoods.length, 1);
+}
+
+export function getPlaceholderZipMatchCount(zip: string, area?: LocationArea) {
+  const seed = area ? `${area.stateSlug}:${area.slug}:${zip}` : zip;
+  const hash = Array.from(seed).reduce((total, char) => total + char.charCodeAt(0), 0);
+  return 8 + (hash % 19);
+}
+
 export function getAreaPath(area: LocationArea) {
   return `/locations/${area.stateSlug}/${area.slug}`;
 }

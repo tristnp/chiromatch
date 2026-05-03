@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
-import { BlogIndexPage } from "@/components/Blog";
-import { blogPosts } from "@/data/blog-posts";
+import { BlogIndexClient } from "@/components/BlogIndexClient";
+import { getBlogPosts } from "@/lib/blog";
 import { buildMetadata } from "@/lib/seo";
+
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = buildMetadata({
   title: "ChiropracticMatch Blog | Auto Accident Recovery Guides",
@@ -10,6 +12,7 @@ export const metadata: Metadata = buildMetadata({
   path: "/blog"
 });
 
-export default function BlogPage() {
-  return <BlogIndexPage posts={blogPosts} />;
+export default async function BlogPage() {
+  const posts = await getBlogPosts();
+  return <BlogIndexClient posts={posts} />;
 }

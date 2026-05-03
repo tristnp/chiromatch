@@ -4,6 +4,8 @@ export type CitySeoRecord = {
   stateCode: string;
   stateSlug: string;
   slug: string;
+  population: number;
+  populationRank: number;
   roads: string[];
   nearbyAreas: string[];
   zipCodes: string[];
