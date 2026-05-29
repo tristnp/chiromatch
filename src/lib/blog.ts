@@ -1,4 +1,4 @@
-import { blogPosts as seededBlogPosts } from "@/data/blog-posts-seeded";
+import { blogPosts as seededBlogPosts } from "@/data/blog-posts-fallback";
 import { getSanityClient, hasSanityConfig } from "@/lib/sanity";
 import type {
   BlogBlock,
@@ -590,7 +590,7 @@ function mapSeededPost(post: any): BlogPostPageData {
     authorName: "ChiropracticMatch",
     seoTitle: `${post.title} | ChiropracticMatch Blog`,
     seoDescription: post.excerpt,
-    featuredImage: null,
+    featuredImage: post.featuredImage ?? null,
     bodyBlocks,
     readTimeMinutes: estimateReadTimeFromBlocks(bodyBlocks, post.excerpt),
     cta,
